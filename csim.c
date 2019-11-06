@@ -49,41 +49,6 @@ void printUsage(char* argv[])
     exit(0);
 }
 
-int *parse(int *counts) {
-  FILE *fid;
-  if ((fid = fopen(trace_file, "r")) == NULL)
-  {
-    while (!feof(fid))
-      {
-        char operation;
-        unsigned int address;
-        int nBytes;
-        if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes))
-        {
-          int ret;
-          switch(operation) {
-            case 'L':
-              ret = load(address);
-              break;
-            case 'S':
-              ret = store(address);
-              break;
-            case 'M':
-              ret = modify(address);
-              break;
-            default:
-              fprintf(stderr, "Invalid operation: %c", operation);
-              ret = 0;
-              break;
-          }
-          counts[0] += ret & 3;
-          counts[1] += (ret >> 2) & 3;
-          counts[2] += (ret >> 4) & 3;
-        }
-      }
-  }
-}
-
 int load(unsigned int address) {
   // Try to find entry in cache
   unsigned int tag = address >> (32 - t);
@@ -136,6 +101,40 @@ int modify(unsigned int address) {
   return load(address) + store(address);
 }
 
+int *parse(int *counts) {
+  FILE *fid;
+  if ((fid = fopen(trace_file, "r")) == NULL)
+  {
+    while (!feof(fid))
+      {
+        char operation;
+        unsigned int address;
+        int nBytes;
+        if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes))
+        {
+          int ret;
+          switch(operation) {
+            case 'L':
+              ret = load(address);
+              break;
+            case 'S':
+              ret = store(address);
+              break;
+            case 'M':
+              ret = modify(address);
+              break;
+            default:
+              fprintf(stderr, "Invalid operation: %c", operation);
+              ret = 0;
+              break;
+          }
+          counts[0] += ret & 3;
+          counts[1] += (ret >> 2) & 3;
+          counts[2] += (ret >> 4) & 3;
+        }
+      }
+  }
+}
 
 /*
  * main - Main routine 
