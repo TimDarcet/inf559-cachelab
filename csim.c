@@ -102,7 +102,7 @@ int modify(unsigned int address) {
   return load(address) + store(address);
 }
 
-void *parse(int *counts) {
+void parse(int *counts) {
   FILE *fid;
   if ((fid = fopen(trace_file, "r")) == NULL)
   {
