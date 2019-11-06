@@ -132,6 +132,7 @@ void parse(int *counts) {
           counts[0] += ret & 3;
           counts[1] += (ret >> 2) & 3;
           counts[2] += (ret >> 4) & 3;
+          printf("%d %d %d", counts[0], counts[1], counts[2]);
         }
       }
   }
@@ -183,7 +184,9 @@ int main(int argc, char* argv[])
   cache = calloc(S, E * L);
   lastuse = calloc(S * E, sizeof(int));
   int counts[3] = {0, 0, 0};
+  printf("%d %d %d", counts[0], counts[1], counts[2]);
   parse(counts);
+  printf("%d %d %d", counts[0], counts[1], counts[2]);
   free(cache);
   free(lastuse);
   printSummary(counts[0], counts[1], counts[2]);
