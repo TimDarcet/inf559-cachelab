@@ -104,37 +104,37 @@ int modify(unsigned int address) {
 
 void parse(int *counts) {
   FILE *fid;
-  if ((fid = fopen(trace_file, "r")) == NULL)
-  {
-    while (!feof(fid))
-      {
-        char operation;
-        unsigned int address;
-        int nBytes;
-        if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes))
-        {
-          int ret;
-          switch(operation) {
-            case 'L':
-              ret = load(address);
-              break;
-            case 'S':
-              ret = store(address);
-              break;
-            case 'M':
-              ret = modify(address);
-              break;
-            default:
-              fprintf(stderr, "Invalid operation: %c", operation);
-              ret = 0;
-              break;
-          }
-          counts[0] += ret & 3;
-          counts[1] += (ret >> 2) & 3;
-          counts[2] += (ret >> 4) & 3;
-          printf("%d %d %d", counts[0], counts[1], counts[2]);
+  if ((fid = fopen(trace_file, "r")) != NULL) {
+    while (!feof(fid)) {
+      char operation;
+      unsigned int address;
+      int nBytes;
+      if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes)) {
+        int ret;
+        switch(operation) {
+          case 'L':
+            ret = load(address);
+            break;
+          case 'S':
+            ret = store(address);
+            break;
+          case 'M':
+            ret = modify(address);
+            break;
+          default:
+            fprintf(stderr, "Invalid operation: %c\n", operation);
+            ret = 0;
+            break;
         }
+        counts[0] += ret & 3;
+        counts[1] += (ret >> 2) & 3;
+        counts[2] += (ret >> 4) & 3;
+        printf("%d %d %d", counts[0], counts[1], counts[2]);
       }
+    }
+  }
+  else {
+    fprintf(stderr, "Couldn't open file\n");
   }
 }
 
