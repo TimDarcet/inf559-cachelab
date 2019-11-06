@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "cachelab.h"
 
@@ -101,7 +102,7 @@ int modify(unsigned int address) {
   return load(address) + store(address);
 }
 
-int *parse(int *counts) {
+void *parse(int *counts) {
   FILE *fid;
   if ((fid = fopen(trace_file, "r")) == NULL)
   {
