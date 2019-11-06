@@ -57,7 +57,8 @@ int *parse(int *counts) {
       {
         char operation;
         unsigned int address;
-        if (fscanf(fid, " %c %x,%d", &operation, &address, NULL))
+        int nBytes;
+        if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes))
         {
           int ret;
           switch(operation) {
@@ -177,7 +178,7 @@ int main(int argc, char* argv[])
   }
 
   t = 32 - b - s;
-  S = (int)pow(2, s);
+  S = (int)pow(2.0, (float)s);
   L = (1 + t + (int)pow(2, b));
   cache = calloc(S, E * L);
   lastuse = calloc(S * E, sizeof(int));
