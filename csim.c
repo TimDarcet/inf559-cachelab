@@ -117,7 +117,7 @@ void parse(int *counts) {
       int nBytes;
       if (fscanf(fid, " %c %x,%d", &operation, &address, &nBytes)) {
         if (verbosity)
-          fprintf(stderr, " %c %x,%d", operation, address, nBytes);
+          fprintf(stderr, " %c %x,%d\n", operation, address, nBytes);
         int ret;
         switch(operation) {
           case 'L':
