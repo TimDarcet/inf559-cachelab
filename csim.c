@@ -61,7 +61,7 @@ int load(unsigned int address) {
       lastuse[sidx * E + lidx] = timer;
       timer++;
       if (verbosity)
-        fprintf(stderr, "L %x hit", address);
+        fprintf(stderr, "L %x hit\n", address);
       return 1; // hit
     }
   }
@@ -75,7 +75,7 @@ int load(unsigned int address) {
       lastuse[sidx * E + lidx] = timer;
       timer++;
       if (verbosity)
-        fprintf(stderr, "L %x miss", address);
+        fprintf(stderr, "L %x miss\n", address);
       return 4; // miss
     }
   }
@@ -96,7 +96,7 @@ int load(unsigned int address) {
   lastuse[sidx * E + lru] = timer;
   timer++;
   if (verbosity)
-    fprintf(stderr, "L %x miss eviction", address);
+    fprintf(stderr, "L %x miss eviction\n", address);
   return 20; // miss, evict
 }
 
