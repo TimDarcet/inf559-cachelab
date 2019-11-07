@@ -130,7 +130,8 @@ void parse(int *counts) {
             ret = modify(address);
             break;
           default:
-            fprintf(stderr, "Invalid operation: %c\n", operation);
+            if (verbosity)
+              fprintf(stderr, "Invalid operation: %c\n", operation);
             ret = 0;
             break;
         }
