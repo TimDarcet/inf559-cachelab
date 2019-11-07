@@ -60,6 +60,8 @@ int load(unsigned int address) {
     if (l->valid && (currentTag == tag)) {
       lastuse[sidx * E + lidx] = timer;
       timer++;
+      if (verbosity)
+        fprintf(stderr, "L %x hit", address);
       return 1; // hit
     }
   }
@@ -72,6 +74,8 @@ int load(unsigned int address) {
       l->rest = tag << (32 - t);
       lastuse[sidx * E + lidx] = timer;
       timer++;
+      if (verbosity)
+        fprintf(stderr, "L %x miss", address);
       return 4; // miss
     }
   }
@@ -91,6 +95,8 @@ int load(unsigned int address) {
   l->rest = tag << (32 - t);
   lastuse[sidx * E + lru] = timer;
   timer++;
+  if (verbosity)
+    fprintf(stderr, "L %x miss eviction", address);
   return 20; // miss, evict
 }
 
@@ -129,7 +135,7 @@ void parse(int *counts) {
         counts[0] += ret & 3;
         counts[1] += (ret >> 2) & 3;
         counts[2] += (ret >> 4) & 3;
-        printf("%d %d %d", counts[0], counts[1], counts[2]);
+        printf("%d %d %d\n", counts[0], counts[1], counts[2]);
       }
     }
   }
@@ -184,9 +190,9 @@ int main(int argc, char* argv[])
   cache = calloc(S, E * L);
   lastuse = calloc(S * E, sizeof(int));
   int counts[3] = {0, 0, 0};
-  printf("%d %d %d", counts[0], counts[1], counts[2]);
+  printf("%d %d %d\n", counts[0], counts[1], counts[2]);
   parse(counts);
-  printf("%d %d %d", counts[0], counts[1], counts[2]);
+  printf("%d %d %d\n", counts[0], counts[1], counts[2]);
   free(cache);
   free(lastuse);
   printSummary(counts[0], counts[1], counts[2]);
